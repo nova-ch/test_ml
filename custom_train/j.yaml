@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tensorflow-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: tensorflow-container
+        image: novach/tensorflow-mlflow:latest  # Ensure this is your Docker image with both TensorFlow and MLflow
+        command: ["python", "/opt/train_model.py"]  # Path to your training script inside the container
+        env:
+          - name: MLFLOW_TRACKING_URI
+            value: "http://mlflow:5000"  # Ensure this points to your MLflow tracking server URL
+      restartPolicy: Never
+  backoffLimit: 4
+
